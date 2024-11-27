@@ -6,6 +6,8 @@ from .fetcher import *
 
 class IssuuDownloadingManager:
     def __init__(self, number_of_threads, page_url, log_file_path):
+        if number_of_threads < 1:
+            raise ValueError("Number of threads must be greater than or equal to 1.")
         self._log_file = log_file_path
         self._estimated_file_count = self.estimate_number_of_documents_in_issuu_page(page_url)
         self._number_of_threads = number_of_threads
@@ -19,6 +21,7 @@ class IssuuDownloadingManager:
     def estimate_number_of_documents_in_issuu_page(self, issuu_page_url):
         print(">> Estimating total workload")
         fetcher = IssuuFetcher(self._logging_callback)
+        issuu_page_url += "/1"
         contents = fetcher.fetch_filter_and_extract_contents_from_issuu_page(issuu_page_url)
         contents_count = len(contents)
         elements = fetcher.fetch_filter_and_extract_pagination_data_from_issuu_page(issuu_page_url)
