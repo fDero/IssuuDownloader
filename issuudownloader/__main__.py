@@ -1,10 +1,8 @@
-from .controller import *
+from .manager import *
 import os
-import signal
 
 def main():
-        manager = IssuuDownloadingManager(3, "https://issuu.com/scoresondemand")
-        signal.signal(signal.SIGINT, lambda sig, frame: (print("Stopping..."), manager.stop()))
+        manager = IssuuDownloadingManager(3, "https://issuu.com/scoresondemand", "log.txt")
         manager.download_every_issuu_document(os.path.curdir)
 
 if __name__ == '__main__':

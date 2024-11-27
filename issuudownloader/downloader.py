@@ -65,8 +65,8 @@ class IssuuDownloader:
         file_name = document_name + '.pdf'
         download_path = os.path.join(download_dir, file_name)
         self.download_file(pdf_url, download_path)
+        self.file_downloaded_callback(document_url, document_name)
 
     def download_all_issuu_files_from_contents_pack(self, contents, download_dir):
         for document_name, document_url in contents.items():
             self.download_issuu_document_as_pdf(document_url, document_name, download_dir)
-            self.file_downloaded_callback(document_url, document_name)
