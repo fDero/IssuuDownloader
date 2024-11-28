@@ -15,7 +15,7 @@ class IssuuDownloadingManager:
         self._downloaded_so_far = {}
         self._page_processed_so_far = []
         self._lock = threading.Lock()
-        self._threads = []
+        self._threads = {}
         self._stop_event = threading.Event()
 
     def estimate_number_of_documents_in_issuu_page(self, issuu_page_url):
@@ -64,12 +64,15 @@ class IssuuDownloadingManager:
             fetched_contents = fetcher.fetch_filter_and_extract_contents_from_issuu_page(page_url)
             if self._stop_event.is_set():
                 break
+            self._logging_callback(str(len(fetched_contents.items())))
             for document_name, document_url in fetched_contents.items():
                 downloader.download_issuu_document_as_pdf(document_url, document_name, download_path)
                 if self._stop_event.is_set():
                     break
             with self._lock:
                 self._page_processed_so_far.append(page_url)
+        self._threads.pop(thread_index)
+        print(">> One thread finished execution")
 
     def _stop_gracefully(self):
         self._stop_event.set()
@@ -79,7 +82,7 @@ class IssuuDownloadingManager:
     def _monitor_user_input_and_exit_on_sigint(self):
         signal.signal(signal.SIGINT, lambda sig, frame: self._stop_gracefully())
         try:
-            while not self._stop_event.is_set():
+            while not self._stop_event.is_set() and not len(self._threads) == 0:
                 time.sleep(0.1)
         finally:
             for thread in self._threads:
@@ -95,5 +98,5 @@ class IssuuDownloadingManager:
                 daemon=True
             )
             downloader_thread.start()
-            self._threads.append(downloader_thread)
+            self._threads[i] = downloader_thread
         self._monitor_user_input_and_exit_on_sigint()

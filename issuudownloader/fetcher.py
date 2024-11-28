@@ -23,7 +23,7 @@ class IssuuFetcher:
     def _filter_elements_by_class(self, web_page, class_name):
         soup = BeautifulSoup(web_page, features='html.parser')
         elements = soup.find_all(class_=class_name)
-        self._log(f"Extracted {len(elements)} elements filtering for {class_name}")
+        self._log(f"Filtered {len(elements)} elements with class {class_name}")
         return elements
 
     def _extract_contents(self, elements):
@@ -38,10 +38,12 @@ class IssuuFetcher:
         publication_class = 'PublicationCard__publication-card__card-link__hUKEG__0-0-3094'
         filtered_elements = self._filter_elements_by_class(web_page, publication_class)
         contents = self._extract_contents(filtered_elements)
+        self._log("operation 'fetch_filter_and_extract_contents_from_issuu_page' completed")
         return contents
 
     def fetch_filter_and_extract_pagination_data_from_issuu_page(self, issuu_page_url):
         pagination_class = 'Pagination__pagination__inner__iHwTs__0-0-3094'
         web_page = self._fetch_html_web_page(issuu_page_url)
         elements = self._filter_elements_by_class(web_page, pagination_class)
+        self._log("operation 'fetch_filter_and_extract_pagination_data_from_issuu_page' completed")
         return elements
