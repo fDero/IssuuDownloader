@@ -9,8 +9,12 @@ Right now the project is not hosted on [PyPI](https://pypi.org) yet, but you can
 package from the [releases section](https://github.com/fDero/IssuuDownloader/releases). Once such
 package is downloaded, you can install it using either `pip` or `pipx`
 
+If you want to build the package from source, use `hatch` (can be installed with `pip` or `pipx` itself)
+to create the package locally in the `dist` folder.
+
 ```bash
-$ pipx install issuudownloader-xx.yy.zz-py3-none-any.whl
+$ hatch build
+$ pipx install dist/*.whl
 ```
 
 ### How can I use it?
