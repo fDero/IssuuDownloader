@@ -11,9 +11,14 @@ class IssuuFetcher:
 
     def _fetch_html_web_page(self, url):
         response = requests.get(url, headers=scrape_headers())
-        response.raise_for_status()
-        self._log(f"Successfully fetched from {url}")
-        return response.content
+        if response.status_code < 200 or response.status_code >= 400:
+            self._log(f"Fetched from {url} failed")
+            self._log(f"Status code: {response.status_code}")
+            self._log(f"Defaulting to empty html")
+            return "<html></html>"
+        else:
+            self._log(f"Successfully fetched from {url}")
+            return response.content
 
     def _filter_elements_by_class(self, web_page, class_name):
         soup = BeautifulSoup(web_page, features='html.parser')

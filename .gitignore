@@ -1,4 +1,5 @@
 .idea
 *.pdf
 *.log
+dist
 __pycache__
