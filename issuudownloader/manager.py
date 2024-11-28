@@ -55,7 +55,6 @@ class IssuuDownloadingManager:
             first_time = False
             if self._stop_event.is_set():
                 break
-            page_index += self._number_of_threads
             fetcher = IssuuFetcher(self._logging_callback)
             downloader = IssuuDownloader(self._logging_callback, self._file_downloaded_callback)
             if self._stop_event.is_set():
@@ -71,6 +70,7 @@ class IssuuDownloadingManager:
                     break
             with self._lock:
                 self._page_processed_so_far.append(page_url)
+            page_index += self._number_of_threads
         self._threads.pop(thread_index)
         print(">> One thread finished execution")
 
@@ -92,11 +92,12 @@ class IssuuDownloadingManager:
     def download_every_issuu_document(self, download_path):
         print(f">> Launching multiple downloading threads: {self._number_of_threads}")
         for i in range(self._number_of_threads):
+            thread_index = i + 1
             downloader_thread = threading.Thread(
                 target=self._download_some_issuu_documents_in_separate_thread,
-                args=(i,download_path,),
+                args=(thread_index,download_path,),
                 daemon=True
             )
             downloader_thread.start()
-            self._threads[i] = downloader_thread
+            self._threads[thread_index] = downloader_thread
         self._monitor_user_input_and_exit_on_sigint()
