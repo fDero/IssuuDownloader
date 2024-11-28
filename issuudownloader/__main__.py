@@ -1,6 +1,7 @@
 from requests import HTTPError
 from .manager import *
 from .commandline import *
+from .validation import *
 from time import sleep
 import sys
 
@@ -8,6 +9,7 @@ import sys
 def main():
     try:
         args = parse_commandline_arguments()
+        validate_commandline_args(args)
         print("Press Ctrl/Cmd + C to exit")
         sleep(0.3)
         manager = IssuuDownloadingManager(
@@ -18,16 +20,8 @@ def main():
         manager.download_every_issuu_document(args.output_dir)
     except KeyboardInterrupt:
         print("Stopping...")
-    except ValueError as ve:
-        print(f"Invalid input: {ve}")
-    except HTTPError as ex:
-        print(f"HTTP error: {ex}")
-        print("keep in mind that urls must not contain the page index")
-        print("https://issuu.com/something/1 <-- not allowed")
-        print("https://issuu.com/something/ <-- not allowed")
-        print("https://issuu.com/something <-- ok")
-    except IOError as ioe:
-        print(f"Error: {ioe}")
+    except Exception as ve:
+        print(f"Unknown error: {ve}")
     finally:
         sys.stdout.flush()
 
