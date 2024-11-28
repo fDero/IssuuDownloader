@@ -1,4 +1,5 @@
 import threading
+from datetime import datetime
 from .downloader import *
 from .fetcher import *
 
@@ -36,6 +37,9 @@ class IssuuDownloadingManager:
     def _logging_callback(self, text_to_log):
         if self._log_file is not None:
             with open(self._log_file, "a") as file:
+                current_timestamp = datetime.now()
+                timestamp_str = f"--{current_timestamp.strftime("%Y-%m-%d.%H:%M:%S")}.{current_timestamp.microsecond // 1000:03d}--\n"
+                file.write(timestamp_str)
                 file.write(text_to_log)
                 file.write("\n")
 
