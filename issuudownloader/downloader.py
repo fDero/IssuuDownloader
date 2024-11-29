@@ -1,3 +1,5 @@
+import string
+
 import requests
 import time
 import os
@@ -60,9 +62,15 @@ class IssuuDownloader:
                 break
         return conversion_outcome['outputFile']
 
+    def _format_file_name(self, non_formatted_filename):
+        valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+        filename = ''.join(c for c in non_formatted_filename if c in valid_chars)
+        self._log(f"Formatting filename: {non_formatted_filename} -> {filename}")
+        return filename
+
     def download_issuu_document_as_pdf(self, document_url, document_name, download_dir):
         pdf_url = self._fetch_issuu_document_pdf_url(document_url)
-        file_name = document_name + '.pdf'
+        file_name = self._format_file_name(document_name) + '.pdf'
         download_path = os.path.join(download_dir, file_name)
         self._download_file(pdf_url, download_path)
         self._file_downloaded_callback(document_url, document_name)
