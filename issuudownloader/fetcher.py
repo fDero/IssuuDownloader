@@ -20,10 +20,10 @@ class IssuuFetcher:
             self._log(f"Successfully fetched from {url}")
             return response.content
 
-    def _filter_elements_by_class(self, web_page, class_name):
+    def _filter_elements_by_class(self, web_page, css_selector):
         soup = BeautifulSoup(web_page, features='html.parser')
-        elements = soup.find_all(class_=class_name)
-        self._log(f"Filtered {len(elements)} elements with class {class_name}")
+        elements = soup.select(css_selector)
+        self._log(f"Filtered {len(elements)} elements with css-selector {css_selector}")
         return elements
 
     def _extract_contents(self, elements):
@@ -35,15 +35,15 @@ class IssuuFetcher:
 
     def fetch_filter_and_extract_contents_from_issuu_page(self, issuu_page_url):
         web_page = self._fetch_html_web_page(issuu_page_url)
-        publication_class = 'PublicationCard__publication-card__card-link__hUKEG__0-0-3133'
-        filtered_elements = self._filter_elements_by_class(web_page, publication_class)
+        publication_class_css_selector = 'a[class*="PublicationCard__publication-card__card-link__hUKEG__0-0-"]'
+        filtered_elements = self._filter_elements_by_class(web_page, publication_class_css_selector)
         contents = self._extract_contents(filtered_elements)
         self._log("operation 'fetch_filter_and_extract_contents_from_issuu_page' completed")
         return contents
 
     def fetch_filter_and_extract_pagination_data_from_issuu_page(self, issuu_page_url):
-        pagination_class = 'Pagination__pagination__inner__iHwTs__0-0-3133'
+        pagination_class_css_selector = 'ul[class*="Pagination__pagination__inner__iHwTs__0-0-"]'
         web_page = self._fetch_html_web_page(issuu_page_url)
-        elements = self._filter_elements_by_class(web_page, pagination_class)
+        elements = self._filter_elements_by_class(web_page, pagination_class_css_selector)
         self._log("operation 'fetch_filter_and_extract_pagination_data_from_issuu_page' completed")
         return elements
