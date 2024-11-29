@@ -1,4 +1,4 @@
-# Issuu-Downloader
+# IssuuDownloader
 
 A python commandline tool to download entire batches of documents concurrently
 from [issuu.com](https://issuu.com) in the form of pdf files. The downloading process of such
