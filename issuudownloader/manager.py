@@ -20,8 +20,8 @@ class IssuuDownloadingManager:
     def estimate_number_of_documents_in_issuu_page(self, issuu_page_url):
         print(">> Estimating total workload")
         fetcher = IssuuFetcher(self._logging_callback)
-        issuu_page_url += "/1"
-        contents = fetcher.fetch_filter_and_extract_contents_from_issuu_page(issuu_page_url)
+        issuu_page_url_first_page = issuu_page_url + "/1"
+        contents = fetcher.fetch_filter_and_extract_contents_from_issuu_page(issuu_page_url_first_page)
         contents_count = len(contents)
         elements = fetcher.fetch_filter_and_extract_pagination_data_from_issuu_page(issuu_page_url)
         max_page_index = 1
@@ -30,7 +30,11 @@ class IssuuDownloadingManager:
                 text = child.text.strip()
                 if text.isdigit() and int(text) > max_page_index:
                     max_page_index = int(text)
-        estimated_contents_count = max_page_index * contents_count
+        estimated_contents_count = (max_page_index - 1) * contents_count
+        issuu_page_url_last_page = issuu_page_url + f"/{max_page_index}"
+        last_page_contents = fetcher.fetch_filter_and_extract_contents_from_issuu_page(issuu_page_url_last_page)
+        last_page_contents_count = len(last_page_contents)
+        estimated_contents_count += last_page_contents_count
         print(">> Estimated total number of documents in issuu page: " + str(estimated_contents_count))
         return estimated_contents_count
 
