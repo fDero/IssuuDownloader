@@ -1,19 +1,18 @@
 import threading
-from datetime import datetime
 from .downloader import *
 from .fetcher import *
 
 
 class IssuuDownloadingManager:
-    def __init__(self, number_of_threads, page_url, log_file_path):
+    def __init__(self, number_of_threads, page_url, log_file, cache):
         assert number_of_threads >= 1
+        self._cache = cache
         self._lock = threading.Lock()
-        self._log_file = log_file_path
+        self._logging_callback = log_file.write
         self._estimated_file_count = self.estimate_number_of_documents_in_issuu_page(page_url)
         self._number_of_threads = number_of_threads
         self._page_url = page_url
         self._downloaded_so_far = {}
-        self._page_processed_so_far = []
         self._threads = {}
 
     def estimate_number_of_documents_in_issuu_page(self, issuu_page_url):
@@ -37,19 +36,17 @@ class IssuuDownloadingManager:
         print(">> Estimated total number of documents in issuu page: " + str(estimated_contents_count))
         return estimated_contents_count
 
-    def _logging_callback(self, text_to_log):
-        if self._log_file is not None:
-            with open(self._log_file, "a") as file:
-                current_timestamp = datetime.now()
-                timestamp_str = f"--{current_timestamp.strftime("%Y-%m-%d.%H:%M:%S")}.{current_timestamp.microsecond // 1000:03d}--\n"
-                file.write(timestamp_str)
-                file.write(text_to_log)
-                file.write("\n")
-
     def _file_downloaded_callback(self, document_url, document_name):
         self._downloaded_so_far[document_name] = document_url
         percentage = int(len(self._downloaded_so_far) / self._estimated_file_count * 100)
         print(f"[{percentage}%]\t Downloaded {document_name}")
+
+    def _page_skipped_callback(self, page_url, fetched_contents):
+        for document_name, document_url in fetched_contents.items():
+            self._downloaded_so_far[document_name] = document_url
+        if len(fetched_contents) > 0:
+            percentage = int(len(self._downloaded_so_far) / self._estimated_file_count * 100)
+            print(f"[{percentage}%]\t Cached: The whole page {page_url} has already been downloaded")
 
     def _download_some_issuu_documents_in_separate_thread(self, thread_index, download_path):
         page_index = thread_index
@@ -61,9 +58,13 @@ class IssuuDownloadingManager:
             downloader = IssuuDownloader(self._logging_callback, self._file_downloaded_callback)
             page_url = f"{self._page_url}/{page_index}"
             fetched_contents = fetcher.fetch_filter_and_extract_contents_from_issuu_page(page_url)
+            if self._cache.is_page_already_downloaded(page_url):
+                self._page_skipped_callback(page_url, fetched_contents)
+                break
             self._logging_callback(str(len(fetched_contents.items())))
             for document_name, document_url in fetched_contents.items():
                 downloader.download_issuu_document_as_pdf(document_url, document_name, download_path)
+            self._cache.register_page_as_downloaded(page_url)
             page_index += self._number_of_threads
         with self._lock:
             self._threads.pop(thread_index)
@@ -72,14 +73,15 @@ class IssuuDownloadingManager:
 
     def download_every_issuu_document(self, download_path):
         print(f">> Launching multiple downloading threads: {self._number_of_threads}")
-        for i in range(self._number_of_threads):
-            thread_index = i + 1
-            downloader_thread = threading.Thread(
-                target=self._download_some_issuu_documents_in_separate_thread,
-                args=(thread_index,download_path,),
-                daemon=True
-            )
-            downloader_thread.start()
-            self._threads[thread_index] = downloader_thread
+        with self._lock:
+            for i in range(self._number_of_threads):
+                thread_index = i + 1
+                downloader_thread = threading.Thread(
+                    target=self._download_some_issuu_documents_in_separate_thread,
+                    args=(thread_index,download_path,),
+                    daemon=True
+                )
+                downloader_thread.start()
+                self._threads[thread_index] = downloader_thread
         while not len(self._threads) == 0:
             time.sleep(0.3)
