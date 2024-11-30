@@ -7,7 +7,7 @@ files relies on the web-api of [Issuu To PDF Download Tool](https://issuudownloa
 ### Why IssuuDownloader?
 I developed this thing as a side-project after a friend of mine told me it was extremely time-consuming to
 download every single music-score manually from pages like [scores-on-demand](https://issuu.com/scoresondemand)
-and [di-blassio](https://issuu.com/diblassio). I decided to automate the process for him, doing nothing more
+and [diblassio](https://issuu.com/diblassio). I decided to automate the process for him, doing nothing more
 than exploiting existing web-APIs and creating this simple python package.
 
 ### How can I install it?
