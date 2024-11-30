@@ -4,6 +4,12 @@ A python commandline tool to download entire batches of documents concurrently
 from [issuu.com](https://issuu.com) in the form of pdf files. The downloading process of such
 files relies on the web-api of [Issuu To PDF Download Tool](https://issuudownload.com).
 
+### Why IssuuDownloader?
+I developed this thing as a side-project after a friend of mine told me it was extremely time-consuming to
+download every single music-score manually from pages like [scores-on-demand](https://issuu.com/scoresondemand)
+and [di-blassio](https://issuu.com/diblassio). I decided to automate the process for him, doing nothing more
+than exploiting existing web-APIs and creating this simple python package.
+
 ### How can I install it?
 Right now the project is not hosted on [PyPI](https://pypi.org) yet, but you can download a pip-compatible
 package from the [releases section](https://github.com/fDero/IssuuDownloader/releases). Once such
@@ -37,9 +43,3 @@ or even the home-screen. It's important to respect the following rules:
 You can set the number of threads used during download with the `-t <number-of-threads>` option (default is `3`).
 You can set the output directory (where downloaded files must go) with the `-d <download-dir-path>` option.
 You can set the path to a log file with the `-l <log-file-path>` option (default is `./issuu-download.log`).
-
-### Why Issuu-Downloader?
-I developed this thing as a side-project after a friend of mine told me it was extremely time-consuming to
-download every single music-score manually from pages like [scores-on-demand](https://issuu.com/scoresondemand)
-and [di-blassio](https://issuu.com/diblassio). I decided to automate the process for him, doing nothing more
-than exploiting existing web-APIs and creating this simple python package.
