@@ -6,8 +6,7 @@ from .fetcher import *
 
 class IssuuDownloadingManager:
     def __init__(self, number_of_threads, page_url, log_file_path):
-        if number_of_threads < 1:
-            raise ValueError("Number of threads must be greater than or equal to 1.")
+        assert number_of_threads >= 1
         self._lock = threading.Lock()
         self._log_file = log_file_path
         self._estimated_file_count = self.estimate_number_of_documents_in_issuu_page(page_url)
