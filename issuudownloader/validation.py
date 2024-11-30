@@ -25,7 +25,7 @@ def validate_thread_number(thread_number):
         exit(1)
 
 
-def validate_issuu_page_url(issuu_page_url):
+def validate_issuu_document_repository(issuu_page_url):
     try:
         assert isinstance(issuu_page_url, str)
         assert len(issuu_page_url) > 0
@@ -40,4 +40,4 @@ def validate_issuu_page_url(issuu_page_url):
 def validate_commandline_args(args):
     validate_thread_number(args.threads)
     validate_output_directory(args.output_dir)
-    validate_issuu_page_url(args.page_url)
+    validate_issuu_document_repository(args.document_repository)

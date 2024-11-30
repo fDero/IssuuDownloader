@@ -35,20 +35,10 @@ def add_commandline_option_for_selecting_thread_count(parser):
     )
 
 
-def add_commandline_option_to_ignore_cache(parser):
-    parser.add_argument(
-        '-c', '--cache',
-        help='boolean value: True if you want to use the cache, False if you want to ignore it',
-        default=True,
-        type=bool
-    )
-
-
 def parse_commandline_arguments():
     parser = create_command_line_arguments_parser()
     add_commandline_option_for_selecting_page_url(parser)
     add_commandline_option_for_selecting_output_dir(parser)
     add_commandline_option_for_selecting_thread_count(parser)
-    add_commandline_option_to_ignore_cache(parser)
     args = parser.parse_args()
     return args

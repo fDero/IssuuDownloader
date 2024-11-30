@@ -16,10 +16,10 @@ def main():
         print("Press Ctrl/Cmd + C to exit")
         sleep(0.3)
         log_file = LogFileHandler(args.output_dir)
-        cache = CacheHandler(args.output_dir, args.cache)
+        cache = CacheHandler(args.output_dir)
         manager = IssuuDownloadingManager(
             number_of_threads=args.threads,
-            page_url=args.page_url,
+            page_url=args.document_repository,
             log_file=log_file,
             cache=cache,
         )

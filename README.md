@@ -67,4 +67,3 @@ or even the home-screen. It's important to respect the following rules:
 
 ### Additional features
 - You can set the number of threads used during download with the `-t [number(3)]` option.
-- You can enable or disable caching with the `--cache [boolean(true)]` option.
