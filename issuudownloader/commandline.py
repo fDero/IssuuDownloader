@@ -10,8 +10,8 @@ def create_command_line_arguments_parser():
 
 def add_commandline_option_for_selecting_page_url(parser):
     parser.add_argument(
-        '-p', '--page-url',
-        help='url of the page to download issuu-documents from',
+        '-r', '--document-repository',
+        help="url of an issuu repository containing many documents (if it's made of more then one page, will download from every page)",
         type=str,
         required=True
     )

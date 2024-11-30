@@ -24,22 +24,47 @@ $ pipx install dist/*.whl
 ```
 
 ### How can I use it?
-To download every single issuu-document from a given issuu-web-page, just run the following command:
+To download every single issuu-document from a given issuu-repository (every web-page 
+with issuu-documents in it is considered a repository, it can be an account-profile, 
+or a stack web-page). When the repository is displayed as paginated in the browser, IssuuDownloader 
+will download documents from all the pages of the repository.
 ```bash
-issuudownloader -p https://issuu.com/my-target-issuu-web-page
+issuudownloader -r https://issuu.com/my-target-issuu-web-page
 ```
 This will itself download every document on that page. It could be a stack-page, an author/uploader-user-profile
 or even the home-screen. It's important to respect the following rules:
 
-| URL Format                        | Is it valid? |
-|-----------------------------------|--------------|
-| https://issuu.com/something       | Yes          |
-| https://www.issuu.com/something   | Yes          |
-| https://issuu.com/something/      | No           |
-| https://www.issuu.com/something/  | No           |
-| https://issuu.com/something/1     | No           |
-| https://www.issuu.com/something/1 | No           |
+<table align="center">
+  <tr>
+    <th>URL Format</th>
+    <th>Is it valid?</th>
+  </tr>
+  <tr>
+    <td>https://issuu.com/something</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>https://www.issuu.com/something</td>
+    <td>Yes</td>
+  </tr>
+  <tr>
+    <td>https://issuu.com/something/</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>https://www.issuu.com/something/</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>https://issuu.com/something/1</td>
+    <td>No</td>
+  </tr>
+  <tr>
+    <td>https://www.issuu.com/something/1</td>
+    <td>No</td>
+  </tr>
+</table>
 
-You can set the number of threads used during download with the `-t <number-of-threads>` option (default is `3`).
-You can set the output directory (where downloaded files must go) with the `-d <download-dir-path>` option.
-You can set the path to a log file with the `-l <log-file-path>` option (default is `./issuu-download.log`).
+### Additional features
+- You can set the number of threads used during download with the `-t [number(3)]` option.
+- You can enable or disable caching with the `--cache [boolean(true)]` option.
