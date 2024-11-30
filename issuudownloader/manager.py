@@ -64,7 +64,8 @@ class IssuuDownloadingManager:
             self._logging_callback(str(len(fetched_contents.items())))
             for document_name, document_url in fetched_contents.items():
                 downloader.download_issuu_document_as_pdf(document_url, document_name, download_path)
-            self._cache.register_page_as_downloaded(page_url)
+            if len(fetched_contents) > 0:
+                self._cache.register_page_as_downloaded(page_url)
             page_index += self._number_of_threads
         with self._lock:
             self._threads.pop(thread_index)

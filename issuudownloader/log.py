@@ -4,7 +4,7 @@ from datetime import datetime
 
 class LogFileHandler:
     def __init__(self, output_dir_filepath):
-        self._log_file_path = os.path.join(output_dir_filepath, "download.log.txt")
+        self._log_file_path = os.path.join(output_dir_filepath, "log.txt")
         with open(self._log_file_path, "w") as file:
             file.write("")
 

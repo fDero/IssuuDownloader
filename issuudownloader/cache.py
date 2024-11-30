@@ -5,7 +5,7 @@ import threading
 
 class CacheHandler:
     def __init__(self, output_dir_filepath, use_cache):
-        self._cache_file_path = os.path.join(output_dir_filepath, "download.cache.json")
+        self._cache_file_path = os.path.join(output_dir_filepath, "cache.json")
         self._lock = threading.Lock()
         if not os.path.exists(self._cache_file_path) or not use_cache:
             with open(self._cache_file_path, "w", encoding='utf-8') as cache_file:
