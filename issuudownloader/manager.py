@@ -1,4 +1,6 @@
 import threading
+import time
+
 from .downloader import *
 from .fetcher import *
 

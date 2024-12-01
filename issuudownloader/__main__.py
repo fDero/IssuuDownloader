@@ -26,8 +26,6 @@ def main():
         manager.download_every_issuu_document(args.output_dir)
     except KeyboardInterrupt:
         print("Stopping...")
-    except Exception as ve:
-        print(f"Unknown error: {ve}")
     finally:
         cache is not None and cache.write_back_to_disk()
         sys.stdout.flush()
