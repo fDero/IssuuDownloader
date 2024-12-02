@@ -2,9 +2,9 @@
 
 A python commandline tool to download entire batches of documents concurrently
 from [issuu.com](https://issuu.com) in the form of pdf files. The downloading process of such
-files relies on the fact that issuu documents can be embedded with the [oembed](https://oembed.com/) API.
-In particular, is possible to retrieve single pages of an issuu document using such API in `jpg` format. The
-conversion to `pdf` is handled with [Pillow](https://python-pillow.org/)
+files relies on the web-api of [Issuu To PDF Download Tool](https://issuudownload.com). In cases where
+such web-api refuses to serve download requests, a back-up system is in place to handle pdf-conversion of
+issuu-document locally.
 
 ### Why IssuuDownloader?
 I developed this thing as a side-project after a friend of mine told me it was extremely time-consuming to
@@ -69,3 +69,4 @@ or even the home-screen. It's important to respect the following rules:
 
 ### Additional features
 - You can set the number of threads used during download with the `-t [number(3)]` option.
+- You can set the output directory path with the `-o [os-dependent-path(.)]` option.
