@@ -6,8 +6,7 @@ authors = [{ name = "Francesco De Rosa", email = "francescodero@outlook.it" }]
 dependencies = [
     "requests",
     "argparse",
-    "bs4",
-    "Pillow"
+    "bs4"
 ]
 readme = "README.md"
 requires-python = ">=3.8"

@@ -2,9 +2,7 @@
 
 A python commandline tool to download entire batches of documents concurrently
 from [issuu.com](https://issuu.com) in the form of pdf files. The downloading process of such
-files relies on the web-api of [Issuu To PDF Download Tool](https://issuudownload.com). In cases where
-such web-api refuses to serve download requests, a back-up system is in place to handle pdf-conversion of
-issuu-document locally.
+files relies on the web-api of [Issuu To PDF Download Tool](https://issuudownload.com).
 
 ### Why IssuuDownloader?
 I developed this thing as a side-project after a friend of mine told me it was extremely time-consuming to
