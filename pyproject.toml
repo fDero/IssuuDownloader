@@ -3,7 +3,12 @@ name = "issuudownloader"
 version = "0.1.0"
 description = "A commandline tool to download issuu-documents as pdf"
 authors = [{ name = "Francesco De Rosa", email = "francescodero@outlook.it" }]
-dependencies = [ "requests", "argparse", "bs4" ]
+dependencies = [
+    "requests",
+    "argparse",
+    "bs4",
+    "Pillow"
+]
 readme = "README.md"
 requires-python = ">=3.8"
 license = {file = "LICENSE"}
