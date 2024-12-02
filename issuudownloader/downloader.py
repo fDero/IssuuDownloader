@@ -1,5 +1,4 @@
-import time
-import requests
+from .request import *
 from .utils import *
 
 
@@ -16,7 +15,7 @@ class IssuuDownloader:
 
     def _store_file_on_disk(self, url, output_path):
         try:
-            response = requests.get(url, headers=scrape_headers(), stream=True)
+            response = get_request(url, headers=scrape_headers(), stream=True)
             response.raise_for_status()
             with open(output_path, 'wb') as file:
                 for chunk in response.iter_content(chunk_size=8192):
@@ -29,7 +28,7 @@ class IssuuDownloader:
 
     def _prepare_issuu_document_online_pdf_conversion_via_third_party_server(self, document_url):
         payload = {"url": document_url}
-        response = requests.post(
+        response = post_request(
             url="https://backend.img2pdf.net/download-pdf",
             headers=download_init_headers(payload),
             json=payload
@@ -39,13 +38,12 @@ class IssuuDownloader:
         return json.loads(response.content)
 
     def _attempt_issuu_document_online_pdf_conversion_via_third_party_server(self, document_id):
-        response = requests.get(
+        response = get_request(
             url=f"https://backend.img2pdf.net/job/{document_id}",
             headers=download_check_headers()
         )
         self._log(f"Content: {response.content}")
         self._log(f"Headers: {response.headers}")
-        response.raise_for_status()
         json_response = json.loads(response.content)
         if json_response['status'] != "succeeded":
             return None

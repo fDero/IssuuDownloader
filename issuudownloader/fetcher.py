@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from .utils import *
-import requests
+from .request import *
 
 
 class IssuuFetcher:
@@ -10,7 +10,7 @@ class IssuuFetcher:
         self._log = logging_callback
 
     def _fetch_html_web_page(self, url):
-        response = requests.get(url, headers=scrape_headers())
+        response = get_request(url, headers=scrape_headers())
         if response.status_code < 200 or response.status_code >= 400:
             self._log(f"Fetched from {url} failed")
             self._log(f"Status code: {response.status_code}")
